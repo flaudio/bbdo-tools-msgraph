@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'HomeController@welcome');
+
+Route::get('/auth/ms-graph/signin', 'MSGraph\AuthController@signin')->name('auth.ms-graph.signin');
+Route::get('/auth/ms-graph/callback', 'MSGraph\AuthController@callback');
+Route::get('/signout', 'MSGraph\AuthController@signout');
