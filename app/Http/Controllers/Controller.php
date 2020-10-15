@@ -27,6 +27,9 @@ class Controller extends BaseController
             $viewData['userName'] = session('userName');
             $viewData['userEmail'] = session('userEmail');
             $viewData['userId'] = session('userId');
+            $viewData['userManager'] = session('userManager');
+            $viewData['userProfilePicture'] = session('userProfilePicture');
+
         }
 
         return $viewData;

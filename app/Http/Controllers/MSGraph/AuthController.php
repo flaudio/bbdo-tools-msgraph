@@ -93,16 +93,24 @@ class AuthController extends Controller
 
                     //return redirect('/home');
 
-                }else{
-
-                    $photo = $graph->createRequest("GET", "/me/photos/48x48/\$value")->execute();
+                    $photo = $graph->createRequest("GET", "/me/photo/\$value")->execute();
                     $photo = $photo->getRawBody();
 
                     $meta = $graph->createRequest("GET", "/me/photos/48x48")->execute();
                     $meta = $meta->getBody();
 
                     $profile_photo_src = 'data:'.$meta['@odata.mediaContentType'].';base64,'.base64_encode($photo);
-                    die('<img src="'.$profile_photo_src.'">');
+
+                }else{
+
+                    $photo = $graph->createRequest("GET", "/me/photo/\$value")->execute();
+                    $photo = $photo->getRawBody();
+
+                    $meta = $graph->createRequest("GET", "/me/photos/48x48")->execute();
+                    $meta = $meta->getBody();
+
+                    $profile_photo_src = 'data:'.$meta['@odata.mediaContentType'].';base64,'.base64_encode($photo);
+                    //die('<img src="'.$profile_photo_src.'">');
                     $newUser = User::create([
                         'firstname' => $user->getGivenName(),
                         'lastname' => $user->getSurname(),
@@ -119,7 +127,7 @@ class AuthController extends Controller
                 }
 
                 $tokenCache = new TokenCache();
-                $tokenCache->storeTokens($accessToken, $user);
+                $tokenCache->storeTokens($accessToken, $user, $profile_photo_src);
 
                 return redirect('/');
             }

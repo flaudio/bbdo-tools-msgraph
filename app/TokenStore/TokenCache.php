@@ -3,7 +3,7 @@
 namespace App\TokenStore;
 
 class TokenCache {
-    public function storeTokens($accessToken, $user) {
+    public function storeTokens($accessToken, $user,$userProfilePicture=null) {
         //dd($user);
         session([
             'accessToken' => $accessToken->getToken(),
@@ -11,7 +11,9 @@ class TokenCache {
             'tokenExpires' => $accessToken->getExpires(),
             'userId'    =>  $user->getId(),
             'userName' => $user->getDisplayName(),
-            'userEmail' => null !== $user->getMail() ? $user->getMail() : $user->getUserPrincipalName()
+            'userManager' => $user->getManager() ? $user->getManager() : null,
+            'userEmail' => null !== $user->getMail() ? $user->getMail() : $user->getUserPrincipalName(),
+            'userProfilePicture' => $userProfilePicture
         ]);
     }
 
@@ -21,6 +23,7 @@ class TokenCache {
         session()->forget('tokenExpires');
         session()->forget('userName');
         session()->forget('userEmail');
+        session()->forget('userProfilePicture');
     }
 
     public function getAccessToken() {
